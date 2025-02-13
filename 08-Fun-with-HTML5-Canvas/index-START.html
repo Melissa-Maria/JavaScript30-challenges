@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+
+<script>
+  const canvas = document.querySelector('#draw'); 
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth; /** sizes up canvas **/
+  canvas.height = window.innerHeight;
+
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round'; /** both round for the edges of the lines when joining and drawing **/
+
+  let isDrawing = false; /** set to false so we can set to true when drawing **/
+  let lastX = 0;
+  let lastY = 0; /** Where the line starts and ends **/
+
+  /** write a draw function to be called when mouse moves ontop of canvas**/
+function draw(e) {
+  if (!isDrawing) return; /** so console.log only runs if mouse is clicked down **/
+  console.log(e);
+  ctx.beginPath(); /** start path to draw **/
+  ctx.moveTo(lastX, lastY); /** start with x + y points **/
+  ctx.lineTo(e.offsetX, e.offsetY); /** goe to (offset values come from event that happens) **/
+  ctx.stroke();
+  // lastX = e.offsetX;
+  // lastY = e.offsetY;
+  // can also  be written as
+  [lastX, lastY] = [e.offsetX, e.offsetY];
+}
+
+/** listen for mouse events **/
+canvas.addEventListener('mousedown', (e) => {
+  isDrawing = true;
+  [lastX, lastY] = [e.offsetX, e.offsetY];
+});
+
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseout', () => isDrawing = false);
+
+
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
